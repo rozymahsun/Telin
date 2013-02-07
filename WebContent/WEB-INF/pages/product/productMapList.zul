@@ -1,0 +1,142 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    
+    <window title="Product Map List" border="normal"
+        apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('myvm') @init('sg.telin.controller.product.ProductMapController') ">
+				<vbox align="stretch" pack="stretch" width="100%"
+					style="padding-left:5px; padding-right:5px;padding-top:5px; padding-bottom:5px;">
+					<groupbox mold="3d">
+					<caption label="Form Filter" />   
+				        <div >
+				         <grid width="99.5%"  > 
+		                    <columns>
+		                        <column label="" width="150px" />
+		                        <column label="" />
+		                        <column label="" width="150px" />
+		                        <column label="" />
+		                        <column label="" width="150px" />
+		                        <column label="" />
+		                    </columns>
+		                    <rows>
+		                        <row>
+	                                <label value="Category" />
+		                            <textbox name="productMapCategory" cols="20" width="90%" 
+		                                value="@bind(myvm.filterObject.productMapCategory)" />
+		                                
+		                            <label value="Product Group" />
+		                            <textbox name="productGroup"   cols="20" width="90%" 
+		                            		 value="@bind(myvm.filterObject.productGroup)" />
+		                            		 
+		                            <label value="Unit" />
+		                            <textbox name="productMapUnit"   cols="20" width="90%" 
+		                            		 value="@bind(myvm.filterObject.prodcutMapUnit)" />
+		                        </row>
+		                       <row>
+		                            <label value="Standar List Price" />
+		                            <textbox name="stdListPrice"    cols="20" width="90%"
+		                            		value="@bind(myvm.filterObject.stdListPrice)"                   />
+		                           	<label value="License Fee" />
+		                           	  <hbox>
+		                    	        <radiogroup id="radiogroup" selectedItem="@bind(myvm.filterObject.licenseFee)">
+											<radio id="licenseFeeYes" label="Yes" value="Yes"/>
+											<radio id="licenseFeeNo" label="No" value="No"/>
+										</radiogroup>
+		               				</hbox>		
+		               				
+		                            <label value="Rev GL Code" />
+		                            <textbox name="revGlCode"   cols="100" width="90%" 
+		                            	 value="@bind(myvm.filterObject.revGlCode)" /> 
+		                        </row>
+		                         <row>
+		                            <label value="Product Code" />
+		                            <textbox name="productCode"    cols="3" width="90%"
+		                            		value="@bind(myvm.filterObject.productCode)"                   />
+		                         
+		               				
+		                            <label value="Main Product" />
+		                            <textbox name="mainProduct"   cols="100" width="90%" 
+		                            	 value="@bind(myvm.filterObject.mainProduct)" /> 
+		                        </row>
+		                    </rows>
+		                </grid>
+				        </div>
+				        
+						<div>
+							<hbox>
+				            <button label="Add Product Map"   image="/images/icon-add.png"   
+				            		onClick="@command('addObject')" />
+				            <button label="Reset" image="/images/icon-reset.gif" 
+				            		onClick="@command('resetObject')" />
+				           	<button label="Search" image="/images/icon-search.gif" 
+				            		onClick="@command('searchObject')" />
+				            </hbox>     
+				            
+				             
+				            <toolbar>
+							<toolbarbutton label="Export PDF " image="/images/icon-pdf.gif" 
+									onClick="@command('exportPDF', ref=objectListbox)">
+							</toolbarbutton>
+							<toolbarbutton label="Export Excel" image="/images/icon-xls.png"
+								onClick="@command('exportListboxToExcel', ref=objectListbox)">
+							</toolbarbutton>
+							</toolbar>
+				        </div>
+				   </groupbox>
+<!-- ====================SEPARATOR=========================== -->
+				        <separator />
+				   <groupbox mold="3d">
+				   <caption label="Data" />
+				        <listbox id="objectListbox" mold="paging" pageSize="8"
+				        	model="@load(myvm.objectList)"
+				            selectedItem="@bind(myvm.currentObject)">
+				            <listhead sizable="true">
+				             	<listheader label="Action" width="10%"/>
+				             	<listheader label="Category" width="15%"
+				                    sort="auto(productMapCategory)" />
+				                <listheader label="Product Group" width="15%"
+				                    sort="auto(productGroup)" />
+				                <listheader label="Product Code" width="15%"
+				                    sort="auto(productCode)" />
+				                <listheader label="Main Product" width="15%"
+				                    sort="auto(mainProduct)" />
+				                <listheader label="Unit" width="15%"
+				                    sort="auto(productMapUnit)" />
+				                <listheader label="Standar List Price" width="15%"
+				                    sort="auto(stdListPrice)" />
+				               <listheader label="License Fee" width="10%"
+				                    sort="auto(licenseFee)" />
+				               <listheader label="Rev GL Code" width="15%"
+				                    sort="auto(revGlCode)" />
+				            </listhead>
+				            <template name="model" var="o1">
+				                <listitem>
+				                	<listcell>
+				                        <hbox spacing="10px">
+				                            <image  src="/images/icon-trash-red.png"
+				                                onClick="@command('deleteObject')" />
+				                            <image src="/images/icon-edit.png"
+				                                onClick="@command('editObject')" />
+				                        </hbox>
+				                    </listcell>
+				                    <listcell label="@load(o1.productMapCategory)" />
+				                    <listcell label="@load(o1.productGroup)" />
+				                    <listcell label="@load(o1.productCode)" />
+				                    <listcell label="@load(o1.mainProduct)" />
+				                    <listcell label="@load(o1.prodcutMapUnit)" />
+				                    <listcell label="@load(o1.stdListPrice)" />
+				                    <listcell label="@load(o1.licenseFee)" />
+				                    <listcell label="@load(o1.revGlCode)" />
+				                    
+				                </listitem>
+				            </template>
+				        </listbox>
+					</groupbox>
+				</vbox>
+    
+    </window>
+</zk>

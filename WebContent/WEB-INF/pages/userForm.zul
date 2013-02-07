@@ -1,0 +1,53 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+    <window title="User Form" border="normal" id="userForm"
+        width="430px" height="auto" apply="org.zkoss.bind.BindComposer"
+        minimizable="false" mode="modal" maximizable="false" closable="true" position="center"
+        viewModel="@id('vm') @init('sg.telin.controller.UserFormController')">
+        <separator />
+        <label value="User information" />
+        <separator />
+        <panel width="100%">
+            <panelchildren>
+                <separator />
+                <grid width="99.5%">
+                    <columns>
+                        <column label="" width="150px" />
+                        <column label="" />
+                    </columns>
+                    <rows>
+                        <row>
+                            <hbox>
+                                <label value="Name" />
+                            </hbox>
+                            <textbox name="name"
+                                value="@bind(vm.currentUser.name)" cols="20" />
+                        </row>
+                        <row>
+                            <hbox>
+                                <label value="Username" />
+                            </hbox>
+                            <textbox name="Username"
+                                value="@bind(vm.currentUser.username)" cols="20" />
+                        </row>
+                        <row>
+                            <hbox>
+                                <label value="Email" />
+                            </hbox>
+                            <textbox name="firstName"
+                                value="@bind(vm.currentUser.email)" cols="20" />
+                        </row>
+
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>
+        <separator />
+        <div align="center">
+            <button id="submit" label="Submit"
+                onClick="@command('save')" />
+            <button id="cancel" label="Cancel"
+                onClick="@command('closeThis')" />
+        </div>
+    </window>
+</zk>

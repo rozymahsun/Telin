@@ -1,0 +1,209 @@
+<?page id="indexPage" title=" ::Telin Singapore Application::" contentType="text/html;charset=UTF-8" cacheable="false" 
+	language="xul/html" zscriptLanguage="Java"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<script type="text/javascript">
+		<!-- Function for scrolling the text -->
+		<!-- thanks to dagarwal82; http://www.zkoss.org/forum/listComment/16011 -->
+		
+		<![CDATA[ function scrollTextbox(txtBox) { var txtEle =
+		document.getElementById(txtBox); txtEle.scrollTop =
+		txtEle.scrollHeight; } ]]>
+			
+	</script>
+
+	<window id="outerIndexWindow" apply="sg.telin.controller.IndexCtrl" border="none"
+		width="100%" height="100%">
+
+		<style>
+			body { padding: 0 0; /* 0 padding on top and bottom and 0
+			padding on right and left */ }
+
+			.z-loading { top: 50% !important; left: 45% !important;
+			align: center; vertical-align: middle; }
+
+			<!-- groupbox inner content area, NO padding -->
+			.myGroupBoxContentArea .z-groupbox-cnt{ background-color:
+			white; padding: 0px }
+		</style>
+		 <style>
+        .btndiv .z-button-cr, .btndiv .z-button-cl, 
+        .btndiv .z-button-bl, .btndiv .z-button-bm,
+        .btndiv .z-button-br, .btndiv .z-button-tl,
+        .btndiv .z-button-tm, .btndiv .z-button-tr {
+            background-image: none;
+        }
+        .btndiv .z-button-cm {
+            background : transparent url('') no-repeat 0 0 ;
+        }
+        .btndiv table {
+            width: 100%;
+            height: 100%;
+        }
+        .myWhite, .myBlack, .myGreen {
+            width: 110px;
+            height: 39px;
+            height: 37px\9;
+        }
+        .myWhite .z-button-cm,
+        .myBlack .z-button-cm,
+        .myGreen .z-button-cm {
+            height: 31px;
+            color: black;
+        }
+        .myWhite .z-button-cm { 
+            background-image : url(${c:encodeURL('/widgets/styling/custom_style/img/button1.png')});
+        }
+        .myBlack .z-button-cm { 
+            background-image : url(${c:encodeURL('/widgets/styling/custom_style/img/button2.png')});
+            color: white;
+        }
+        .myGreen .z-button-cm { 
+            background-image : url(${c:encodeURL('/widgets/styling/custom_style/img/button3.png')});
+        }
+        .z-button-focus .z-button-cm {
+            background-position: 0 -62px                    
+        }
+        .z-button-over .z-button-cm {
+            background-position: 0 -31px
+        }
+        .z-button-clk .z-button-cm {
+            background-position: 0 -93px                    
+        }               
+    </style>
+		<!-- HIDDEN fields for storing the current desktop height and width -->
+		<intbox id="currentDesktopHeight" visible="false" />
+		<intbox id="currentDesktopWidth" visible="false" />
+		<!-- HIDDEN field for storing the initial menu type -->
+		<checkbox id="CBtreeMenu" checked="true" visible="false" />
+
+		<borderlayout id="borderlayoutMain" height="100%">
+			<north id="borderlayoutMainNorth" border="none"
+				height="80px" splittable="false">
+				<div id="div1" height="80px"
+					style="background-color:silver; background-image:url(${c:encodeURL('/images/bg_newheader.png')});  background-repeat: repeat-y repeat-x ; border: 'none';">
+
+
+					<hbox pack="stretch" width="100%">
+ 
+						<div id="divNo" align="left">
+							<image src="/images/logo.png" />
+						</div>
+						<div align="right" style="float: right">
+							<div align="bottom" style="float: bottom">
+								<vlayout>
+								<hlayout>
+									<div align="right"
+										style="float: right">
+										<!-- USER-BAR. Comps are created in the Controller -->
+										<window id="winUserBar"
+											apply="sg.telin.controller.util.UserBarCtrl" border="none" />
+									</div>
+
+									<div align="right"
+										style="float: right; padding-right: 10px;">
+										<hbox pack="end">
+											<button id="btnLogout"
+												height="20px" label="${c:l('btnLogout.label')}"
+												tooltiptext="${c:l('btnLogout.tooltiptext')}" 
+												/>
+										</hbox>
+									</div>
+
+								</hlayout>
+								<hlayout>
+								<div align="right" style="float: right; padding-right: 10px; padding-top: 20px;">
+								<label id="lb_date"
+								style="text-align: right; font-size: 12px; color: white;"></label>
+								</div>
+								</hlayout>
+								</vlayout>
+							</div>
+
+						</div>
+					</hbox>
+
+					<div id="divDropDownMenu" width="100%">
+						<menubar id="mainMenuBar" height="25px"></menubar>
+					</div>
+				</div>
+			</north>
+
+			<!-- MAIN MENU AREA -->
+			<west id="west" border="none" margins="0,0,0,0" size="230px"
+				collapsible="true" style="background-color: #D6DCDE; padding: 5px"
+				flex="true" minsize="100" splittable="true" autoscroll="false">
+				<div id="divWest">WEST</div>
+			</west>
+
+			<!-- MODULE CONTENT AREA -->
+			<center id="center" border="none" margins="0,0,0,0"
+				flex="true" autoscroll="true"
+				style="background-color: #D6DCDE; padding: 5px">
+				<div id="divCenter">
+
+					<groupbox id="groupbox_menu" mold="3d"
+						closable="false" sclass="myGroupBoxContentArea">
+						<caption
+							style="color: #000000; font-weight: bold;"
+							label="${c:l('workplace')}">
+							<div sclass="z-toolbar" style="padding:0">
+								<hbox pack="stretch"
+									sclass="hboxRemoveWhiteStrips" width="100%">
+
+									<toolbar align="start"
+										style="float:left; border-style: none;">
+									</toolbar>
+
+									<toolbar align="center"
+										style="float:left; border-style: none;">
+									</toolbar>
+
+									<toolbar align="end"
+										style="float:right; border-style: none;">
+										<button id="btnCloseAllTabs"
+											image="/images/stop.gif" height="20px"
+											tooltiptext="${c:l('btnCloseAllTabs.tooltiptext')}" />
+									</toolbar>
+								</hbox>
+							</div>
+						</caption>
+
+
+
+						<tabbox id="tabBoxIndexCenter" width="100%"
+							style="padding: 0px">
+							<tabs id="tabsIndexCenter"></tabs>
+							<tabpanels id="tabpanelsBoxIndexCenter">
+							</tabpanels>
+						</tabbox>
+					</groupbox>
+
+				</div>
+			</center>
+
+			<east border="none" margins="0,0,0,0" size="0%">
+				<div id="divEast">EAST</div>
+			</east>
+
+
+			<!-- STATUS BAR AREA -->
+			<south id="south" border="none" height="25px"
+				splittable="false">
+				<div id="divSouth" align="center" height="25px"
+					style="background-color:#14FFF; border: 'none'; padding-top:5px;font-weight: bold;">
+				    Copyright (c) 2013 - TELEKOMUNIKASI INDONESIA INTERNATIONAL
+				</div>
+
+			</south>
+		</borderlayout>
+
+
+	</window>
+</zk>

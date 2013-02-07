@@ -1,0 +1,89 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    
+    <window title="Test List" border="normal" apply="org.zkoss.bind.BindComposer" viewModel="@id('myvm') @init('sg.telin.controller.test.TestTableController') ">
+				<vbox align="stretch" pack="stretch" width="100%" style="padding-left:5px; padding-right:5px;padding-top:5px; padding-bottom:5px;">
+
+					<groupbox mold="3d">
+					<caption label="Form Filter" />   
+				        <div >
+				         <grid width="99.5%"  > 
+		                    <columns>
+		                        <column label="" width="150px" />
+		                        <column label="" />
+		                        <column label="" width="150px" />
+		                        <column label="" />
+		                        <column label="" width="150px" />
+		                        <column label="" />
+		                    </columns>
+		                    <rows>
+		                        <row>
+	                                <label value="Id" />
+		                            <textbox name="id" cols="20" width="90%" value="@bind(myvm.filterObject.id)" />
+		                            <label value="Field 1" />
+		                            <textbox name="field1"   cols="20" width="90%" value="@bind(myvm.filterObject.field1)" />
+		                            <label value="Field 2" />
+		                            <textbox name="field2"   cols="20" width="90%" value="@bind(myvm.filterObject.field2)" />
+		                        </row>
+		                       <row>
+		                            <label value="Field 3" />
+		                            <textbox name="field3"    cols="20" width="90%" value="@bind(myvm.filterObject.field3)"                   />
+		                        </row>
+		                    </rows>
+		                </grid>
+				        </div>
+				        
+<!-- ==============Search button =============== -->
+						<div>
+							<hbox>
+					            <button label="Add Test"   image="/images/icon-add.png" onClick="@command('addObject')" />
+					            <button label="Reset" image="/images/icon-reset.gif" onClick="@command('resetObject')" />
+					           	<button label="Search" image="/images/icon-search.gif" onClick="@command('searchObject')" />
+				            </hbox>     
+				            
+
+<!-- ==============Export Excel dan PDF =============== -->
+				            <toolbar>
+							<toolbarbutton label="Export PDF " image="/images/icon-pdf.gif" onClick="@command('exportPDF', ref=objectListbox)">
+							</toolbarbutton>
+							<toolbarbutton label="Export Excel" image="/images/icon-xls.png" onClick="@command('exportListboxToExcel', ref=objectListbox)">
+							</toolbarbutton>
+							</toolbar>
+				        </div>
+				   </groupbox>
+
+<!-- ====================Data List=========================== -->
+				        <separator />
+				   <groupbox mold="3d">
+				   <caption label="Data" />
+				        <listbox id="objectListbox" mold="paging" pageSize="8"
+				        	model="@load(myvm.objectList)"
+				            selectedItem="@bind(myvm.currentObject)">
+				            <listhead sizable="true">
+				             	<listheader label="Action" width="10%"/>
+				             	<listheader label="Id" width="15%" sort="auto(id)" />
+				                <listheader label="Field 1" width="15%" sort="auto(field1)" />
+				                <listheader label="Field 2" width="15%" sort="auto(field2)" />
+				                <listheader label="Field 3" width="15%" sort="auto(field3)" />
+				            </listhead>
+				            <template name="model" var="o1">
+				                <listitem>
+				                	<listcell>
+				                        <hbox spacing="10px">
+				                            <image  src="/images/icon-trash-red.png" onClick="@command('deleteObject')" />
+				                            <image src="/images/icon-edit.png" onClick="@command('editObject')" />
+				                        </hbox>
+				                    </listcell>
+				                    <listcell label="@load(o1.id)" />
+				                    <listcell label="@load(o1.field1)" />
+				                    <listcell label="@load(o1.field2)" />
+				                    <listcell label="@load(o1.field3)" />
+		                    
+				                </listitem>
+				            </template>
+				        </listbox>
+					</groupbox>
+				</vbox>
+    
+    </window>
+</zk>

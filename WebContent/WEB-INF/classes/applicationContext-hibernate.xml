@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"    
+    xmlns:jee="http://www.springframework.org/schema/jee"
+
+    xmlns:jms="http://www.springframework.org/schema/jms"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+              http://www.springframework.org/schema/aop
+              http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context-2.5.xsd
+              http://www.springframework.org/schema/jee
+              http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+
+              http://www.springframework.org/schema/jms
+
+              http://www.springframework.org/schema/jms/spring-jms-2.5.xsd
+              http://www.springframework.org/schema/lang
+              http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+              http://www.springframework.org/schema/tx
+              http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+              http://www.springframework.org/schema/util
+              http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+   	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="autodetect">
+   	
+		
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+    <bean id="persistenceManager" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+    
+
+    <bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+	   <property name="ignoreResourceNotFound"><value>true</value></property>   <!--  In the properties file, override the items you need in this format:
+	mainDataSource.user=root
+	mainDataSource.password=abcdefgh
+    -->
+   		<property name="location">
+   			<!--  You may use file:d:/temp/db.properties etc here -->
+    		<value>classpath:db.properties</value>
+    	</property>
+	</bean>
+
+
+
+	
+       <!-- C3P0 Configuration -->
+	<bean id="mainDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost/test" />
+        <property name="user" value="root"/>
+        <property name="password" value=""/>
+        <property name="idleConnectionTestPeriod" value="1200"/>
+        <property name="maxIdleTime" value="1200"/>         
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="10"/>
+        <property name="initialPoolSize" value="10"/>          
+        <property name="maxStatements" value="100"/>            
+        <property name="acquireIncrement" value="3"/>                              
+	</bean>
+	<!-- Obtain a datasource connection via JNDI. This section will go if we make the transition to jndi (just repeated here
+	to make it easier for others to change without flipping over to synchronizer again.  
+	<bean id="mainDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+         <property name="jndiName" value="jdbc/darfat" />
+         <property name="resourceRef" value="true" />
+	 </bean> 
+	 -->
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref local="mainDataSource" />
+		</property>
+	</bean>
+	
+    <!-- Hibernate SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>sg.telin</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			    <prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Switch on transactions -->
+	<tx:annotation-driven />
+
+	<context:component-scan base-package="sg.telin"/>
+	<!-- <context:component-scan base-package="sg.telin.backend.service"/> -->
+	<!-- <context:component-scan base-package="test.sg.telin.backend"/> -->
+	<context:component-scan base-package="com.felees.hbnpojogen.persistence.impl.HibernateUtils"/>
+	
+
+
+<!-- Add your pointcuts to provide transactions/session management here. Alternately, use the @Transaction annotation in your service layer -->
+<!--   
+	 <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>         
+            <tx:method name="*" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+    
+     <aop:config>
+        <aop:pointcut id="testOperation" expression="execution(* test.sg.telin.backend.DAOTest.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="testOperation"/>
+    </aop:config>
+-->
+	<bean name="userDao" class="sg.telin.backend.dao.impl.UserDaoImpl"> 
+		<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>  
+	 <bean name="productMapDao" class="sg.telin.backend.dao.impl.ProductMapDaoImpl"> 
+		<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
+	 <bean name="productCodeDao" class="sg.telin.backend.dao.impl.ProductCodeDaoImpl"> 
+		<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean name="testTableDao" class="sg.telin.backend.dao.impl.TestTableDaoImpl"> 
+		<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+
+
+
+	<bean name="userService" class="sg.telin.backend.service.impl.UserServiceImpl"> 
+		 <property name="userDao" ref="userDao" />  
+	 </bean>   
+   	<bean name="loginService" class="sg.telin.backend.service.impl.LoginServiceImpl"> 
+		 <property name="userDao" ref="userDao" />  
+	 </bean>
+	 <bean name="productMapService" class="sg.telin.backend.service.impl.ProductMapImpl"> 
+		 <property name="productMapDao" ref="productMapDao" />  
+	 </bean>      
+	 <bean name="productCodeService" class="sg.telin.backend.service.impl.ProductCodeImpl"> 
+		 <property name="productCodeDao" ref="productCodeDao" />  
+	 </bean>
+	 <bean name="testTableService" class="sg.telin.backend.service.impl.TestTableImpl"> 
+		 <property name="testTableDao" ref="testTableDao" />  
+	 </bean>      
+
+ </beans>

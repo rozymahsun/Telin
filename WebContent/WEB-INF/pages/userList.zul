@@ -1,0 +1,47 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+    
+    <window title="Customer List" border="normal"
+        apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('myvm') @init('sg.telin.controller.UserListController')">
+
+        <div>
+            <button label="Add New Customer"     onClick="@command('addNewCustomer')" />
+        </div>
+        <separator />
+
+        <listbox id="test" model="@load(myvm.userList)"
+            selectedItem="@bind(myvm.currentUser)">
+            <listhead sizable="true">
+             	<listheader label="Action" width="10%"/>
+                <listheader label="Name" width="30%"
+                    sort="auto(name)" />
+                <listheader label="Username" width="30%"
+                    sort="auto(username)" />
+                <listheader label="email" width="30%"
+                    sort="auto(email)" />
+               
+            </listhead>
+            <template name="model" var="p1">
+                <listitem>
+                	<listcell>
+                        <hbox spacing="10px">
+                            <image  src="/images/icon-trash-red.png"
+                                onClick="@command('deleteThisCustomer')" />
+                            <image src="/images/icon-edit.png"
+                                onClick="@command('editThisCustomer')" />
+                        </hbox>
+                    </listcell>
+                    <listcell label="@load(p1.name)" />
+                    <listcell label="@load(p1.username)" />
+                    <listcell label="@load(p1.email)" />
+                    
+                </listitem>
+            </template>
+        </listbox>
+    </window>
+</zk>

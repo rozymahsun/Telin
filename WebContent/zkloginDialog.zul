@@ -1,0 +1,105 @@
+<?page id="loginZul" title="Login"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<style>
+		<!-- background image -->
+		background-color:#03adc3;
+		<!-- 
+		url(${c:encodeURL('/images/bg_purple.jpg')});
+		background-repeat:repeat-x; }
+		-->
+		 
+		<!-- cut the vertical borders in the rows -->
+		tr.z-row td.z-row-inner { border-right: 0px #CCC; }
+
+		<!-- nicer looking -->
+		.z-window-modal-cnt-noborder {background: none}
+		.z-window-modal-cl-noborder {background: none}
+
+		.outerGroupBox .z-groupbox-cnt {padding: 0px;}
+	</style>
+
+	<window id="loginwin" border="0" width="480px" 
+		use="sg.telin.controller.login.ZkLoginDialogCtrl">
+
+		<groupbox mold="3d" closable="false" sclass="outerGroupBox" style="border: 2px; background-color : #f26632">
+	
+		<separator bar="true" />
+			<groupbox mold="3d" contentStyle="border:0">
+				<div>
+					<image src="/images/logo_login.png" />
+				</div> 
+			</groupbox>
+			<groupbox mold="3d" contentStyle="border:0" if="${not empty param.login_error}" >
+				<label style="color:red"
+					value="Login failed. Please try again." />
+				<h:br />
+					
+			</groupbox>
+<separator bar="true" />
+			<hbox pack="stretch" width="100%">
+			<!-- 
+				<groupbox mold="3d" contentStyle="border:0" style="padding-top: 20px;padding-left: 10px;" width="80px">
+					<vlayout sclass="z-valign-top">
+						<label value=" " />
+						<label value=" " />
+					</vlayout>
+				</groupbox>
+				 -->
+				<groupbox mold="3d" contentStyle="border:0">
+
+					<div>
+					<separator bar="true" />
+						<!-- ### Spring Security action-url = j_spring_security_check  ### -->
+					
+							<grid fixedLayout="true" width="95%"
+								sclass="GridLayoutNoBorder" style="border: 0px; background-color : #E3EDFB">
+								<columns>
+									<column width="20%" />
+									<column width="80%" />
+								</columns>
+								<rows>
+									<row style="background-color : #03adc3">
+										<label
+											id="label_ZKLoginDialog_user"
+											value="${c:l('label_ZKLoginDialog_user.value')}" 
+											/>
+										<textbox id="txtbox_Username" width="90%"
+											name="j_username"  />
+									</row>
+									<row style="background-color : #03adc3">
+										<label
+											id="label_ZKLoginDialog_pwd"
+											value="${c:l('label_ZKLoginDialog_pwd.value')}" />
+										<textbox id="txtbox_Password" width="90%"
+											type="password" name="j_password" />
+									</row>
+								
+								</rows>
+							</grid>
+
+							<separator bar="true" />
+
+							<hbox>
+							
+								<button id="btnLogin" type="submit" image="images/icon-login.png"
+									 label="Login" style=""/>
+							</hbox>
+
+					
+					</div>
+
+				</groupbox>
+			</hbox>
+		</groupbox>
+
+	</window>
+</zk>
+
+

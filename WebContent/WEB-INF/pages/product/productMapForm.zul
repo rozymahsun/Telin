@@ -1,0 +1,117 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+    <window title="Product Map Form" border="normal" id="productMapForm"
+        width="630px" height="auto" apply="org.zkoss.bind.BindComposer"
+        minimizable="false" mode="modal" maximizable="false" closable="true" position="center"
+        viewModel="@id('vm') @init('sg.telin.controller.product.ProductMapFormController')"
+        >
+        
+        <separator />
+        <label value="Product Map information" />
+        <separator />
+        
+        <panel width="100%">
+            <panelchildren>
+                <separator />
+                <grid width="99.5%">
+                    <columns>
+                        <column label="" width="150px" />
+                        <column label="" />
+                    </columns>
+                    <rows>
+                        <row>
+                            <hbox>
+                                <label value="Product Map Category" />
+                            </hbox>
+                            <textbox name="productMapCategory"
+                                value="@bind(vm.currentObject.productMapCategory) " cols="20" width="90%" constraint="no empty"/>
+                        </row>
+                        <row>
+                            <hbox>
+                                <label value="Product Group" />
+                            </hbox>
+                            <textbox name="productGroup"   value="@bind(vm.currentObject.productGroup)" 
+                              cols="20" width="90%" constraint="no empty"/>
+                        </row>
+                         <row>
+                            <hbox>
+                                <label value="Product Code" />
+                            </hbox>
+                            <hbox>
+                            <!-- <textbox name="productCode"  value="@bind(vm.currentObject.productCode)"
+                                cols="3" width="50%" constraint="no empty"/>  -->
+                                 <bandbox id="bd" mold="rounded" autodrop="true"
+                                 value="@bind(vm.currentObject.productCode)" 
+                                 >  
+							        <bandpopup>
+							            <listbox height="295px" width="500px" mold="paging" pageSize="8"
+							               onSelect="bd.value=self.selectedItem.label; bd.close();"
+							               model="@load(vm.producCodeList)"
+				            			  selectedItem="@bind(vm.producCodeObject)">
+							                <listhead>
+							                    <listheader label="Product Code" />
+							                    <listheader label="Product Code Short Desc" />
+							                    <listheader label="Product Code Desc" />
+							                </listhead>
+							                <template name="model" var="o1">
+								                <listitem>
+								                	<listcell label="@load(o1.id)" />
+								                    <listcell label="@load(o1.productCodeShortDesc)" />
+								                    <listcell label="@load(o1.productCodeDesc)" />
+								                    
+								                </listitem>
+								            </template>
+							            </listbox>
+							        </bandpopup>
+							    </bandbox>
+							    
+							    
+							   </hbox>
+                        </row>
+                       
+                        <row>
+                            <hbox>
+                                <label value="Unit" />
+                            </hbox>
+                            <textbox name="prodcutMapUnit"  value="@bind(vm.currentObject.prodcutMapUnit)" 
+                               cols="10" width="50%" constraint="no empty"/>
+                        </row>
+ 						<row>
+                            <hbox>
+                                <label value="Standar List Price" />
+                            </hbox>
+                            <textbox name="stdListPrice"    value="@bind(vm.currentObject.stdListPrice)"
+                              cols="20" width="90%" />
+                        </row>
+                     
+                        <row>
+                            <hbox>
+                                <label value="License Fee" />
+                            </hbox>
+                            <hbox>
+                    	        <radiogroup id="radiogroup" selectedItem="@bind(vm.currentObject.licenseFee)">
+									<radio id="licenseFeeYes" label="Yes" value="Yes"/>
+									<radio id="licenseFeeNo" label="No" value="No"/>
+								</radiogroup>
+               				</hbox>				                
+                        </row>
+                         <row>
+                            <hbox>
+                                <label value="Rev GL Code" />
+                            </hbox>
+                            <textbox name="revGlCode"   value="@bind(vm.currentObject.revGlCode)" 
+                              rows="3" cols="100" width="90%" />
+                        </row>
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>
+        <separator />
+        <div align="center">
+            <button id="submit" label="Save" image="/images/icon-save.gif" 
+                onClick="@command('save')" />
+            <button id="cancel" label="Cancel" image="/images/icon-cancel.gif" 
+                onClick="@command('close')" />
+        </div>
+    </window>
+</zk>

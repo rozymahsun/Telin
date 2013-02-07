@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:XMLRootMenu xmlns:ns2="http://www.daibutsu.de/zk/menu">
+
+	<!-- ######################################################### -->
+	<!-- #################### possible Tags ###################### -->
+	<!-- ######################################################### -->
+	<!-- menu:           a parent menu that have child nodes.      -->
+	<!-- menuItem:       the menu item.                            -->
+	<!-- zulNavigation:  the path and name of the zul-file.        -->
+	<!-- iconName:       the path and name to an icon.             -->
+	<!-- rightName:      if it's declared, than the rightname must -->
+	<!--                 be the same as in the securityContext for -->
+	<!--                 creating this menuitem.                   -->
+	<!-- open:           (true/false opens a menu at creation time -->
+	<!-- ######################################################### -->
+
+	<!-- DON'T CHANGE THE ID FOR the Dashboard menu entry -->
+	<!-- it's used in the mainMenuCtrl.java-->  
+	<menu id="menu_UserManagement" open="false" rightName="" >
+		<menuItem id="menu_Item_UserList"  zulNavigation="/WEB-INF/pages/userList.zul"
+		iconName="/images/hordotyell.gif" />	
+	</menu>		
+	<menu id="menu_Product" open="false" rightName="">
+		<menuItem id="menu_Item_ProductMap"  zulNavigation="/WEB-INF/pages/product/productMapList.zul"
+		iconName="/images/hordotyell.gif" />
+		<menuItem id="menu_Item_ProductCode"  zulNavigation="/WEB-INF/pages/product/productMapList.zul"
+		iconName="/images/hordotyell.gif" />
+		<menuItem id="menu_Item_TestTable"  zulNavigation="/WEB-INF/pages/test/testList.zul"
+		iconName="/images/hordotyell.gif" />
+	</menu>		
+	
+	
+	
+</ns2:XMLRootMenu>
